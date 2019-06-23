@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+# Chris Additional files to ignore 06/20/2019
+*.swp
+
