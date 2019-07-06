@@ -89,10 +89,12 @@ def get_last_page_scraped(mydb, table):
     mycursor.execute(sql)
     myresult        = mycursor.fetchall()
     '''
-    06.20.2019 last page was generating errors.  original code myresult[0][0].split('=')[1]
-               no idea why there needed to be a split of anything here.  changed code to 
-               the below'''  
-    last_page       = myresult[0][0]
+    07.05.2019 	Our page_number is actually a url (see above). 
+               	Therefore, we retreive the one with the highest count
+	       	which is returned as a string, which we split and take the number. 
+		myresult[0][0].split('=')[1]
+               	'''  
+    last_page       = myresult[0][0].split('=')[1]
     
     return last_page
 

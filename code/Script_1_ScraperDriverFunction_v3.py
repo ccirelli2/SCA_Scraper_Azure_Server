@@ -4,26 +4,13 @@
 
 
 
-'''FIXING RUN ON NEXT PAGE
+'''LOG - CHANGES / FIXES TO CODE
 
-1.) Page Count:         Is off.  Our the last defendant name in our database 
-                        is FCP Financial Holdings w/ a page number of 6259 
-                        where as the actual page number is 106759.  
-                        I think we need to fix the count and add a primary key to our db
-                        so that we can properly refer to the correct page on 
-                        the web that coincides with the case. 
-                        Note:  In fact, we may just want to save the entire URL, 
-                        this way we can use it in our code without any modifications. 
-    Solution:           You can see the solution in the below script.  the html object 
-                        is the web page address.  So we would
-                        replace the input of 'Count' in our mainscraper function 
-                        (import from module 4) w/ a similar html
-                        object that we passed to access the page.  This way what 
-                        we scrape and record as the page in our db
-                        should be the same (obviously we'll need to double check 
-                        as the count seems to be skipping the blank pages). 
+07.05.2019:
+	Instead of inserting the Count object as the page number, we will insert the
+	url.  This way we will always have an accurate link to the page from where
+	we derived/retreived the data. 
 '''
-
 
 
 ### IMPORT LIBRARIES___________________________________________________________
@@ -131,7 +118,7 @@ def SCA_data_scraper(Url, add_pages, table, Run_type, report_output_type, passwo
             # If Page Is Not Blank - Scrape
             if bool(search) is True:
                 # Load Main Scraper Function
-                m4.main_scraper_function(mydb, table, bsObj, Count)
+                m4.main_scraper_function(mydb, table, bsObj, web_page_address)
             # Elif Blank - Just increase count & move to the next page
                 # do nothing
 
@@ -162,6 +149,7 @@ def SCA_data_scraper(Url, add_pages, table, Run_type, report_output_type, passwo
 
             # Create Beautiful Soup Object per article
             html = urlopen(Url + str(Beginning_page + Count))
+            print(Url + str(Beginning_page + Count))
             web_page_address = (Url + str(Beginning_page + Count))
             bsObj = BeautifulSoup(html.read(), 'lxml')
 
@@ -229,11 +217,14 @@ def SCA_data_scraper(Url, add_pages, table, Run_type, report_output_type, passwo
 
 # RUN SCRAPER FUNCTION_____________________________________________________________________
 
+'''Run Options:  'Start_from_last_page', 'Reset
+   Output Opts:	 'print_results', 'generate_email'	
+'''
 
 Scraper_function = SCA_data_scraper(
 		   Url, add_pages = 20, table = 'SCA_DATA_2', 
-		   Run_type ='Start_from_last_page', 
-                   report_output_type = 'generate_email', 
+		   Run_type ='Reset', 
+                   report_output_type = 'generate_email',
                    password = 'Work4starr')
 
 
